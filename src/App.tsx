@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React, { useState } from "react";
+import logo from "./logo.svg";
+import Home from "./pages/Home";
+import "./App.less";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <div className="App">
-      <header className="App-header">
+      <Home />
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>Hello Vite + React!</p>
         <p>
@@ -37,9 +39,9 @@ function App() {
             Vite Docs
           </a>
         </p>
-      </header>
+      </header> */}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

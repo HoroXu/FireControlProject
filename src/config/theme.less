@@ -1,0 +1,131 @@
+/**
+ * Created by xuqingxiao on 2020/09/14.
+ */
+
+//按钮颜色
+@primary-color: #118730;
+@primary-color-active: #3367d6;
+@border-color-e9: #e9e9e9;
+@icon-url: '~antd-iconfont/iconfont';
+
+//距离参数
+@base-px: 8px;
+@margin-padding-px: 24px;
+@component-px: 48px;
+@border-radius-button: 8px;
+
+//背景色
+@background-color: #f7f7f7;
+@background-green: #118730;
+@background-light-green: #f2fff6;
+
+//字体颜色
+@font-black: #333333;
+@font-green: #0CC43C;
+@font-yellow: #F7B500;
+@font-red: #FF3534;
+@font-b04:rgba(0, 0, 0, 0.04);
+@font-b05:rgba(0, 0, 0, 0.05);
+@font-b08:rgba(0, 0, 0, 0.08);
+@font-b25:rgba(0, 0, 0, 0.25);
+@font-b45:rgba(0, 0, 0, 0.45);
+@font-b65:rgba(0, 0, 0, 0.65);
+@font-b85:rgba(0, 0, 0, 0.85);
+
+//字体大小
+@font-smaller: 14px;
+@font-small:16px;
+@font-base: 18px;
+@font-lg: 20px;
+
+//水平垂直居中
+.center-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+//column水平垂直居中
+.center-center-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+//水平居中
+.justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+//column水平居中
+.align-center-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+//column垂直居中
+.justify-center-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+//垂直居中
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
+//两边对其
+.space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+//超出换行
+.flex-wrap {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+//删除before样式
+
+.del-before {
+  &:before {
+    content: none !important;
+  }
+}
+
+//删除after样式
+
+.del-after {
+  &:after {
+    content: none !important;
+  }
+}
+
+//超出省略号
+.line-clamp(@num) {
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: @num;  /*要显示的行数*/
+  -webkit-box-orient: vertical;
+}
+
+
+.font-green{
+  color: @font-green;
+}
+.font-yellow{
+  color: @font-yellow;
+}
+.font-red{
+  color: @font-red;
+}
+.font-b25{
+  color: @font-b25;
+}

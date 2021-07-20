@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./index.less";
+import { queryCompanyInfo } from "../../services/index";
 
 const Links = () => {
+  const [linkState, setLinkState] = useState([]);
+  const queryCompanyInfoFn = async () => {
+    const res = await queryCompanyInfo(1);
+    setLinkState(res);
+  };
+
+  useEffect(() => {
+    queryCompanyInfoFn();
+  }, []);
   return (
     <div className="links-container">
       <div className="links-title">
@@ -10,8 +20,12 @@ const Links = () => {
         <span className="title-line"></span>
       </div>
       <div className="links-area">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(() => {
-          return <div className="links-item">南京消防检测</div>;
+        {linkState.map((item: any) => {
+          return (
+            <a href={item.linkUrl}>
+              <div className="links-item">{item.linkTitle}</div>
+            </a>
+          );
         })}
       </div>
     </div>

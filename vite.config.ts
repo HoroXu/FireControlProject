@@ -8,16 +8,16 @@ export default defineConfig({
   server: {
     port: 3001,
     proxy: {
-      '/api': {
-        target: 'http://47.99.134.126:28019/api/v1',
+      '/f': {
+        target: 'http://117.50.117.110:9999/f/',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '')
+        rewrite: path => path.replace(/^\/f/, '')
       }
     }
   },
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, './'),
+      // '~': path.resolve(__dirname, './'),
       '@': path.resolve(__dirname, 'src')
     }
   },

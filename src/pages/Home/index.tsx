@@ -1,51 +1,70 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./index.less";
-import Header from "@/components/Header";
-import CarouselCom from "@/components/Carousel";
-import NewsArea from "@/pages/Home/NewsArea";
-import caseImg from "@/assets/images/caseImg.png";
-import CompanyInfo from "@/components/CompanyInfo";
-import Links from "@/components/Links";
-import Bottom from "@/components/Bottom";
-
+import Header from "../../components/Header";
+import CarouselCom from "../../components/Carousel";
+import NewsArea from "../../pages/Home/NewsArea";
+// import caseImg from "@/assets/images/caseImg.png";
+import CompanyInfo from "../../components/CompanyInfo";
+import Links from "../../components/Links";
+import Bottom from "../../components/Bottom";
+import Logo from "../../components/Logo";
+import EngineeringCase from "./EngineeringCase/index";
+import { queryNewsArea, queryEngineeringCase } from "../../services/index";
 const Home = () => {
-  const imgArr = [1, 2, 3, 4, 5, 6];
+  const [contactState, setContactState] = useState<any>({});
+  const [aboutUsInfo, setAboutUsInfo] = useState([]);
+  const [corporateNewsInfo, setCorporateNewsInfo] = useState([]);
+  const [industryNewsInfo, setIndustryNewsInfo] = useState([]);
+  const queryNewsAreaFn = async (
+    mc: number,
+    pageNum: number,
+    pageSize: number
+  ) => {
+    const res = await queryNewsArea(mc, pageNum, pageSize);
+    return res;
+  };
+
+  const queryEngineeringCaseFn = async (
+    itemCode: number,
+    pageNum: number,
+    pageSize: number
+  ) => {
+    const res = await queryEngineeringCase(itemCode, pageNum, pageSize);
+    return res;
+  };
+  useEffect(() => {
+    async function fetchInfo() {
+      const aboutUsInfoTemp = await queryNewsAreaFn(2011, 10, 1);
+      const corporateNewsInfoTemp = await queryNewsAreaFn(2010, 10, 1);
+      const industryNewsInfotemp = await queryEngineeringCaseFn(2021, 10, 1);
+      setAboutUsInfo(aboutUsInfoTemp.rows);
+      setCorporateNewsInfo(corporateNewsInfoTemp.rows);
+      setIndustryNewsInfo(industryNewsInfotemp.rows);
+      // console.log(
+      //   aboutUsInfoTemp,
+      //   corporateNewsInfoTemp,
+      //   industryNewsInfotemp,
+      //   "======"
+      // );
+    }
+    fetchInfo();
+
+    // queryNewsAreaFn(2011, 10, 1);
+  }, []);
   return (
     <div className="home-area">
+      <Logo />
       <Header />
       <CarouselCom />
       <div className="news-container">
-        <NewsArea titleZh="公司新闻" titleEn="Company news" />
-        <NewsArea titleZh="公司新闻" titleEn="Company news" />
-        <NewsArea titleZh="公司新闻" titleEn="Company news" />
+        <NewsArea titleZh="关于我们" titleEn="Company news" data={aboutUsInfo}/>
+        <NewsArea titleZh="企业新闻" titleEn="Company news" data={corporateNewsInfo}/>
+        <NewsArea titleZh="行业新闻" titleEn="Company news" data={industryNewsInfo}/>
       </div>
-      <div className="engineering-case">
-        <div className="case-title">
-          <div>
-            <span className="case-icon"></span>
-            <span className="case-text">工程案例</span>
-          </div>
-          <span>MORE</span>
-        </div>
-        <div className="case-container">
-          {imgArr.map((index) => {
-            return (
-              <div
-                className={
-                  index > 3 ? "case-content content-margin" : "case-content"
-                }
-              >
-                <img src={caseImg} className="case-img" />
-                <div className="content-title">正洪大厦地下停车场</div>
-                <div className="content-num">编号：797490709173901</div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <CompanyInfo />
+      <EngineeringCase />
+      <CompanyInfo setContactState={setContactState} />
       <Links />
-      <Bottom />
+      <Bottom contactState={contactState} />
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import Axios from "../utils/axios";
 
 // 1 logo 2 背景图 3 轮播
@@ -48,13 +47,42 @@ export const queryEngineeringCase = async (
 };
 
 export const queryNewsArea = async (
-  mc: number,
-  pageNum: number,
-  pageSize: number,
+  mc?: number,
+  pageNum?: number,
+  pageSize?: number,
   keyWord?: string
 ) => {
   try {
     return await Axios.get("f/qa", { mc, pageNum, pageSize, keyWord });
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const searchService = async (keyWord: string) => {
+  try {
+    return await Axios.get("f/qa", { keyWord });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const queryDetail = async (docId: any) => {
+  console.log(docId, "docId====");
+  try {
+    return await Axios.get("f/qo", {
+      docId,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// 用于底备的备案号和站点统计的
+export const queryRecord = async (linkType: any) => {
+  try {
+    return await Axios.get("f/ql", {
+      linkType,
+    });
   } catch (err) {
     console.log(err);
   }

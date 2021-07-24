@@ -3,8 +3,8 @@ import telphone from "@/assets/images/telphone.png";
 import fax from "@/assets/images/fax.png";
 import contact from "@/assets/images/contact.png";
 import mail from "@/assets/images/mail.png";
-import qrImg from "@/assets/images/qrImg.png";
-import office from "@/assets/images/office.png";
+// import qrImg from "@/assets/images/qrImg.png";
+// import office from "@/assets/images/office.png";
 import "./index.less";
 import { queryCompanyInfo, queryContactInfo } from "../../services/index";
 
@@ -14,10 +14,22 @@ interface CompanyPropsInterface {
 const CompanyInfo = (props: CompanyPropsInterface) => {
   const { setContactState } = props;
   const [companyInfo, setCompanyInfo] = useState<any>([]);
+  const [qrUrl, setQrUrl] = useState("");
+  const [branchUrl, setBranchUrl] = useState("");
+  const [branchTitle, setBranchTitle] = useState("");
   const [contactInfo, setContactInfo] = useState<any>({});
   const queryLogoFn = async () => {
     const res = await queryCompanyInfo();
     setCompanyInfo(res);
+    const qrUrlTemp = res.filter((item: any) => {
+      return item.linkType === "0";
+    });
+    const branchUrlTemp = res.filter((item: any) => {
+      return item.linkType === "2";
+    });
+    setQrUrl(qrUrlTemp[0].linkPicUrl);
+    setBranchUrl(branchUrlTemp[0].linkPicUrl);
+    setBranchTitle(branchUrlTemp[0].linkTitle);
   };
 
   const queryContactInfoFn = async () => {
@@ -37,51 +49,47 @@ const CompanyInfo = (props: CompanyPropsInterface) => {
             {contactInfo.servicePhone && contactInfo.servicePhone.dictLabel}
           </div>
           <div className="free-number">
-            {contactInfo.servicePhone && contactInfo.servicePhone.dictValue}
+            {contactInfo.servicePhone && contactInfo.servicePhone.remark}
           </div>
           <div className="contact-items">
             <img src={telphone} className="contact-icon" />
             <span className="contact-content">
               {contactInfo.telephone && contactInfo.telephone.dictLabel}：
-              {contactInfo.telephone && contactInfo.telephone.dictValue}
+              {contactInfo.telephone && contactInfo.telephone.remark}
             </span>
           </div>
           <div className="contact-items">
             <img src={fax} className="contact-icon" />
             <span className="contact-content">
               {contactInfo.fax && contactInfo.fax.dictLabel}：
-              {contactInfo.fax && contactInfo.fax.dictValue}
+              {contactInfo.fax && contactInfo.fax.remark}
             </span>
           </div>
           <div className="contact-items">
             <img src={contact} className="contact-icon" />
             <span className="contact-content">
               {contactInfo.contact && contactInfo.contact.dictLabel}：
-              {contactInfo.contact && contactInfo.contact.dictValue}
+              {contactInfo.contact && contactInfo.contact.remark}
             </span>
           </div>
           <div className="contact-items">
             <img src={mail} className="contact-icon" />
             <span className="contact-content">
               {contactInfo.mail && contactInfo.mail.dictLabel}：
-              {contactInfo.mail && contactInfo.mail.dictValue}
+              {contactInfo.mail && contactInfo.mail.remark}
             </span>
           </div>
         </div>
-        <img
-          className="qr-img"
-          src={companyInfo[0] && companyInfo[0].linkPicUrl}
-        />
+        <img className="qr-img" src={qrUrl} />
         <div className="branch-office-container">
-          <a href={companyInfo[1] && companyInfo[1].linkUrl}>
+          <a href={companyInfo[1] && companyInfo[1].linkUrl} target="_Blank">
             <img
               className="branch-office"
-              src={companyInfo[1] && companyInfo[1].linkPicUrl}
+              src={branchUrl}
+              title={branchTitle}
             />
           </a>
-          <span className="branch-office-title">
-            {companyInfo[1] && companyInfo[1].linkTitle}
-          </span>
+          {/* <span className="branch-office-title">{branchTitle}</span> */}
         </div>
       </div>
     </div>

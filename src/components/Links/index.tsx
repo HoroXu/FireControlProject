@@ -22,7 +22,7 @@ const Links = () => {
       <div className="links-area">
         {linkState.map((item: any) => {
           return (
-            <a href={item.linkUrl}>
+            <a href={item.linkUrl} target="_Blank">
               <div className="links-item">{item.linkTitle}</div>
             </a>
           );

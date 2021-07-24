@@ -1,47 +1,37 @@
 import React, { useState } from "react";
-import logo from "./logo.svg";
-import Home from "./pages/Home";
+// import logo from "./logo.svg";
+// import Home from "./pages/Home";
+import Header from "./components/Header";
+import CarouselCom from "./components/Carousel";
+import CompanyInfo from "./components/CompanyInfo";
+import Links from "./components/Links";
+import Bottom from "./components/Bottom";
+import Logo from "./components/Logo";
 import "./App.less";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import routes from "./router";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+const App = () => {
+  const [contactState, setContactState] = useState<any>({});
   return (
     <div className="App">
-      <Home />
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header> */}
+      <Router>
+        <Logo />
+        <Header />
+        <CarouselCom />
+        <Switch>
+          {routes.map((route) => (
+            <Route exact key={route.path} path={route.path}>
+              <route.component />
+            </Route>
+          ))}
+        </Switch>
+      </Router>
+      <CompanyInfo setContactState={setContactState} />
+      <Links />
+      <Bottom contactState={contactState} />
     </div>
   );
-}
+};
 
 export default App;

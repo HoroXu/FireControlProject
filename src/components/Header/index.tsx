@@ -1,25 +1,30 @@
 import React, { useState, useEffect } from "react";
 import "./index.less";
-import { queryMenu } from "../../services/index";
-import { Menu } from "antd";
+import { queryMenu, queryNewsArea } from "../../services/index";
+import { Menu, Input } from "antd";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { queryMc } from "../../redux/Page/actions";
+import history from "../../utils/history";
 const { SubMenu } = Menu;
+const { Search } = Input;
 
-const Header = () => {
-  // const menuArr = [
-  //   "首页",
-  //   "公司简介",
-  //   "新闻资讯",
-  //   "工程案例",
-  //   "公司荣誉",
-  //   "检测设备",
-  //   "检测流程",
-  //   "人才招聘",
-  //   "联系我们",
-  // ];
+const Header = (props: any) => {
   const [menuArr, setMenuArr] = useState([]);
+  const [selectedItem, setSelectedItem] = useState("");
   const queryMenuFn = async () => {
     const res = await queryMenu();
     setMenuArr(res);
+  };
+  const menuFn = (mc: string) => {
+    window.sessionStorage.setItem("mc", mc);
+    props.queryMc(mc);
+    setSelectedItem(mc);
+  };
+  const onSearch = (value: any) => {
+    console.log(value);
+    window.sessionStorage.setItem("searchVal", value);
+    history.push("/TablePage");
   };
   useEffect(() => {
     queryMenuFn();
@@ -30,20 +35,36 @@ const Header = () => {
         <Menu mode="horizontal">
           {menuArr.map((item: any) => {
             return (
-              <SubMenu key={item.menuId} title={item.menuName}>
-                {item.children &&
-                  item.children.map((childrenItem: any) => {
-                    return (
-                      <Menu.Item key={childrenItem.menuId}>
-                        {childrenItem.menuName}
-                      </Menu.Item>
-                    );
-                  })}
-              </SubMenu>
+              <Link to={item.menuId === 2001 ? "/" : "/TablePage"}>
+                <SubMenu
+                  key={item.menuId}
+                  title={item.menuName}
+                  onTitleClick={() => {
+                    menuFn(item.menuId);
+                  }}
+                  className={
+                    selectedItem === item.menuId ? "selected-item" : ""
+                  }
+                >
+                  {item.children &&
+                    item.children.map((childrenItem: any) => {
+                      return (
+                        <Menu.Item key={childrenItem.menuId}>
+                          {childrenItem.menuName}
+                        </Menu.Item>
+                      );
+                    })}
+                </SubMenu>
+              </Link>
             );
           })}
         </Menu>
-        <input className="input-area" />
+        {/* <Input className="input-area" /> */}
+        <Search
+          // placeholder="input search text"
+          onSearch={onSearch}
+          style={{ width: 200 }}
+        />
       </div>
       {/* <div className="header-container">
         {menuArr.map((item) => {
@@ -54,5 +75,15 @@ const Header = () => {
     </div>
   );
 };
+function mapStateToProps(state: any) {
+  return {};
+}
+function mapDispatchToProps(dispatch: any) {
+  return {
+    queryMc: (val: any) => {
+      dispatch(queryMc(val));
+    },
+  };
+}
 
-export default Header;
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
